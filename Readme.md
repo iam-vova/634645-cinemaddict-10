@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
 * Студент: [Владимир Брылев](https://up.htmlacademy.ru/ecmascript/10/user/634645).
-* Наставник: `Неизвестно`.
+* Наставник: [Андрей Фидельман](https://htmlacademy.ru/profile/id773165).
 
 ---
 
