@@ -72,3 +72,6 @@ const filmDetailsCloseBtn = filmDetailsElement.querySelector(`.film-details__clo
 filmDetailsCloseBtn.addEventListener(`click`, () => {
   filmDetailsElement.remove();
 });
+
+const footerStat = document.querySelector(`.footer .footer__statistics p`);
+footerStat.innerHTML = `${films.length} movies inside`;
