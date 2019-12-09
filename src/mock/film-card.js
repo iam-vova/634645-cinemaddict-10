@@ -1,4 +1,10 @@
-import {getRandomFloatNumber, getRandomIntegerNumber, getRandomArrayItem, arrayShuffle, getTimeFromMins} from '../utils.js';
+import {
+  getRandomFloatNumber,
+  getRandomIntegerNumber,
+  getRandomArrayItem,
+  arrayShuffle,
+  getTimeFromMins,
+  generateRandomDate} from '../utils.js';
 
 const PosterNames = [
   `made-for-each-other.png`,
@@ -34,12 +40,6 @@ const getRandomRating = () => {
   const minRate = 0.1;
   const maxRate = 10;
   return getRandomFloatNumber(minRate, maxRate).toFixed(1);
-};
-
-const generateRandomDate = () => {
-  const minDate = new Date(1895, 3, 22).getTime();
-  const maxDate = new Date().getTime();
-  return new Date(minDate + Math.random() * (maxDate - minDate));
 };
 
 const filmGenres = [`Musical`, `Western`, `Drama`, `Comedy`, `Cartoon`, `Mystery`];

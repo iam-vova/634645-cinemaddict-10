@@ -30,6 +30,12 @@ const getTimeFromMins = (mins) => {
   return hours === 0 ? minutes + `m` : hours + `h ` + minutes + `m`;
 };
 
-export {getRandomFloatNumber, getRandomIntegerNumber, getRandomArrayItem, arrayShuffle, getTimeFromMins};
+const generateRandomDate = () => {
+  const minDate = new Date(1895, 3, 22).getTime();
+  const maxDate = new Date().getTime();
+  return new Date(minDate + Math.random() * (maxDate - minDate));
+};
+
+export {getRandomFloatNumber, getRandomIntegerNumber, getRandomArrayItem, arrayShuffle, getTimeFromMins, generateRandomDate};
 
 
