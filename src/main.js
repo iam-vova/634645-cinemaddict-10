@@ -1,5 +1,5 @@
 import FilmCard from './components/film-card.js';
-import {createFilmDetailsTemplate} from './components/film-details.js';
+import FilmDetails from './components/film-details.js';
 import Films from './components/films.js';
 import SiteMenu from './components/site-menu.js';
 import LoadMoreButton from './components/load-more-btn.js';
@@ -61,7 +61,7 @@ for (let item of filmsListExtraElement) {
   filmsSorted.slice(0, FILMS_EXTRA_CARDS_COUNT).forEach((film) => render(filmsListExtraElementWrap, new FilmCard(film).getElement(), RenderPosition.BEFOREEND));
 }
 
-render(siteMainElement, createFilmDetailsTemplate(films[0]), RenderPosition.BEFOREEND);
+render(siteMainElement, new FilmDetails(films[0]).getElement(), RenderPosition.BEFOREEND);
 
 const filmDetailsElement = siteMainElement.querySelector(`.film-details`);
 const filmDetailsCloseBtn = filmDetailsElement.querySelector(`.film-details__close-btn`);

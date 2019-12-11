@@ -1,4 +1,5 @@
 import {generateComments} from '../mock/comments.js';
+import {createElement} from "../utils.js";
 
 const COMMENTS_COUNT = 4;
 
@@ -24,7 +25,7 @@ const createComment = (comments) => {
     .join(`\n`);
 };
 
-export const createFilmDetailsTemplate = (film) => {
+const createFilmDetailsTemplate = (film) => {
   const {poster,
     title,
     titleOriginal,
@@ -163,3 +164,28 @@ export const createFilmDetailsTemplate = (film) => {
     </section>`
   );
 };
+
+export default class FilmDetails {
+  constructor(film) {
+    this._film = film;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmDetailsTemplate(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
