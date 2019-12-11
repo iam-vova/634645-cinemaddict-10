@@ -1,4 +1,4 @@
-import {createFilmCardTemplate} from './components/film-card.js';
+import FilmCard from './components/film-card.js';
 import {createFilmDetailsTemplate} from './components/film-details.js';
 import Films from './components/films.js';
 import SiteMenu from './components/site-menu.js';
@@ -26,7 +26,7 @@ const filmListElement = filmElement.querySelector(`.films-list`);
 const filmListWrapElement = filmElement.querySelector(`.films-list__container`);
 
 let showingFilmsCount = FILMS_CARDS_COUNT_ON_START;
-films.slice(0, showingFilmsCount).forEach((film) => render(filmListWrapElement, createFilmCardTemplate(film), RenderPosition.BEFOREEND));
+films.slice(0, showingFilmsCount).forEach((film) => render(filmListWrapElement, new FilmCard(film).getElement(), RenderPosition.BEFOREEND));
 
 render(filmListElement, createLoadMoreButtonTemplate(), RenderPosition.BEFOREEND);
 
@@ -37,7 +37,7 @@ loadMoreButton.addEventListener(`click`, () => {
   showingFilmsCount = showingFilmsCount + FILMS_CARDS_COUNT_BY_BUTTON;
 
   films.slice(prevFilmsCount, showingFilmsCount)
-    .forEach((film) => render(filmListWrapElement, createFilmCardTemplate(film), RenderPosition.BEFOREEND));
+    .forEach((film) => render(filmListWrapElement, new FilmCard(film).getElement(), RenderPosition.BEFOREEND));
 
   if (showingFilmsCount >= films.length) {
     loadMoreButton.remove();
@@ -58,7 +58,7 @@ for (let item of filmsListExtraElement) {
   const filmsListExtraElementWrap = item.querySelector(`.films-list__container`);
   const filmsExtraTitle = item.querySelector(`.films-list__title`).innerHTML;
   const filmsSorted = filmsSorting(films, titleToSortKey[filmsExtraTitle]);
-  filmsSorted.slice(0, FILMS_EXTRA_CARDS_COUNT).forEach((film) => render(filmsListExtraElementWrap, createFilmCardTemplate(film), RenderPosition.BEFOREEND));
+  filmsSorted.slice(0, FILMS_EXTRA_CARDS_COUNT).forEach((film) => render(filmsListExtraElementWrap, new FilmCard(film).getElement(), RenderPosition.BEFOREEND));
 }
 
 render(siteMainElement, createFilmDetailsTemplate(films[0]), RenderPosition.BEFOREEND);
