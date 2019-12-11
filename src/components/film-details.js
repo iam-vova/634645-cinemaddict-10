@@ -1,29 +1,4 @@
-import {generateComments} from '../mock/comments.js';
 import {createElement} from "../utils.js";
-
-const COMMENTS_COUNT = 4;
-
-const createComment = (comments) => {
-  return comments
-    .map((comment) => {
-      return (
-        ` <li class="film-details__comment">
-            <span class="film-details__comment-emoji">
-              <img src="./images/emoji/${comment.emoji}" width="55" height="55" alt="emoji">
-            </span>
-            <div>
-              <p class="film-details__comment-text">${comment.message}</p>
-                <p class="film-details__comment-info">
-                  <span class="film-details__comment-author">${comment.userName}</span>
-                  <span class="film-details__comment-day">${comment.date}</span>
-                  <button class="film-details__comment-delete">Delete</button>
-                </p>
-            </div>
-          </li>`
-      );
-    })
-    .join(`\n`);
-};
 
 const createFilmDetailsTemplate = (film) => {
   const {poster,
@@ -40,8 +15,6 @@ const createFilmDetailsTemplate = (film) => {
     descriptionFull,
     ageRestriction,
     commentsCont} = film;
-  const comments = generateComments(COMMENTS_COUNT);
-  const commentsMarkup = createComment(comments);
 
   return (
     `<section class="film-details">
@@ -126,7 +99,7 @@ const createFilmDetailsTemplate = (film) => {
             <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentsCont}</span></h3>
     
             <ul class="film-details__comments-list">
-              ${commentsMarkup}
+
             </ul>
     
             <div class="film-details__new-comment">
