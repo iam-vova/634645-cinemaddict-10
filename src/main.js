@@ -1,7 +1,7 @@
 import {createFilmCardTemplate} from './components/film-card.js';
 import {createFilmDetailsTemplate} from './components/film-details.js';
 import {createFilmsTemplate} from './components/films.js';
-import {createSiteMenuTemplate} from './components/site-menu.js';
+import SiteMenu from './components/site-menu.js';
 import {createLoadMoreButtonTemplate} from './components/load-more-btn.js';
 import UserRate from './components/user-rate.js';
 import {generateFilmCards} from './mock/film-card.js';
@@ -18,7 +18,7 @@ const siteHeaderElement = document.querySelector(`.header`);
 render(siteHeaderElement, new UserRate(films).getElement(), RenderPosition.BEFOREEND);
 
 const siteMainElement = document.querySelector(`.main`);
-render(siteMainElement, createSiteMenuTemplate(films), RenderPosition.BEFOREEND);
+render(siteMainElement, new SiteMenu(films).getElement(), RenderPosition.BEFOREEND);
 render(siteMainElement, createFilmsTemplate(), RenderPosition.BEFOREEND);
 
 const filmElement = siteMainElement.querySelector(`.films`);
