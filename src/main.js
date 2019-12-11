@@ -2,7 +2,7 @@ import FilmCard from './components/film-card.js';
 import {createFilmDetailsTemplate} from './components/film-details.js';
 import Films from './components/films.js';
 import SiteMenu from './components/site-menu.js';
-import {createLoadMoreButtonTemplate} from './components/load-more-btn.js';
+import LoadMoreButton from './components/load-more-btn.js';
 import UserRate from './components/user-rate.js';
 import {generateFilmCards} from './mock/film-card.js';
 import {render, RenderPosition} from './utils.js';
@@ -28,7 +28,7 @@ const filmListWrapElement = filmElement.querySelector(`.films-list__container`);
 let showingFilmsCount = FILMS_CARDS_COUNT_ON_START;
 films.slice(0, showingFilmsCount).forEach((film) => render(filmListWrapElement, new FilmCard(film).getElement(), RenderPosition.BEFOREEND));
 
-render(filmListElement, createLoadMoreButtonTemplate(), RenderPosition.BEFOREEND);
+render(filmListElement, new LoadMoreButton().getElement(), RenderPosition.BEFOREEND);
 
 const loadMoreButton = filmListElement.querySelector(`.films-list__show-more`);
 
