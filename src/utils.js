@@ -1,3 +1,8 @@
+export const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`
+};
+
 const getRandomFloatNumber = (min, max) => {
   return Math.random() * (max - min) + min;
 };
@@ -34,6 +39,24 @@ const generateRandomDate = () => {
   const minDate = new Date(1895, 3, 22).getTime();
   const maxDate = new Date().getTime();
   return new Date(minDate + Math.random() * (maxDate - minDate));
+};
+
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
+
+export const render = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
 };
 
 export {getRandomFloatNumber, getRandomIntegerNumber, getRandomArrayItem, arrayShuffle, getTimeFromMins, generateRandomDate};

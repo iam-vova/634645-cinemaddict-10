@@ -5,6 +5,7 @@ import {createSiteMenuTemplate} from './components/site-menu.js';
 import {createLoadMoreButtonTemplate} from './components/load-more-btn.js';
 import {createUserRateTemplate} from './components/user-rate.js';
 import {generateFilmCards} from './mock/film-card.js';
+import {render} from './utils.js';
 
 const FILMS_CARDS_COUNT = 15;
 const FILMS_CARDS_COUNT_ON_START = 5;
@@ -12,10 +13,6 @@ const FILMS_CARDS_COUNT_BY_BUTTON = 5;
 const FILMS_EXTRA_CARDS_COUNT = 2;
 
 const films = generateFilmCards(FILMS_CARDS_COUNT);
-
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
 
 const siteHeaderElement = document.querySelector(`.header`);
 render(siteHeaderElement, createUserRateTemplate(films), `beforeend`);
