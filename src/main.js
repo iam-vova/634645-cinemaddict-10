@@ -15,8 +15,29 @@ const FILMS_CARDS_COUNT_BY_BUTTON = 5;
 const FILMS_EXTRA_CARDS_COUNT = 2;
 const COMMENTS_COUNT = 4;
 
+const renderFilm = (film, container) => {
+  const filmComponent = new FilmCard(film);
+  const filmDetalisComponent = new FilmDetails(film);
+
+  const filmActiveElements = filmComponent.getElement().querySelectorAll(`.film-card__poster, .film-card__title, .film-card__comments`);
+  const comments = generateComments(COMMENTS_COUNT);
+
+  filmActiveElements.forEach((element) => element.addEventListener(`click`, () => {
+    render(siteMainElement, filmDetalisComponent.getElement(), RenderPosition.BEFOREEND);
+  }));
+
+  const closePopupBtn = filmDetalisComponent.getElement().querySelector(`.film-details__close-btn`);
+  closePopupBtn.addEventListener(`click`, () => {
+    filmDetalisComponent.getElement().remove();
+  });
+
+  const filmDetailsComments = filmDetalisComponent.getElement().querySelector(`.film-details__comments-list`);
+  comments.forEach((comment) => render(filmDetailsComments, new Comment(comment).getElement(), RenderPosition.BEFOREEND));
+
+  render(container, filmComponent.getElement(), RenderPosition.BEFOREEND);
+};
+
 const films = generateFilmCards(FILMS_CARDS_COUNT);
-const comments = generateComments(COMMENTS_COUNT);
 
 const siteHeaderElement = document.querySelector(`.header`);
 render(siteHeaderElement, new UserRate(films).getElement(), RenderPosition.BEFOREEND);
@@ -30,21 +51,21 @@ const filmListElement = filmElement.querySelector(`.films-list`);
 const filmListWrapElement = filmElement.querySelector(`.films-list__container`);
 
 let showingFilmsCount = FILMS_CARDS_COUNT_ON_START;
-films.slice(0, showingFilmsCount).forEach((film) => render(filmListWrapElement, new FilmCard(film).getElement(), RenderPosition.BEFOREEND));
+films.slice(0, showingFilmsCount).forEach((film) => renderFilm(film, filmListWrapElement));
 
-render(filmListElement, new LoadMoreButton().getElement(), RenderPosition.BEFOREEND);
+const loadMoreButton = new LoadMoreButton();
+render(filmListElement, loadMoreButton.getElement(), RenderPosition.BEFOREEND);
 
-const loadMoreButton = filmListElement.querySelector(`.films-list__show-more`);
-
-loadMoreButton.addEventListener(`click`, () => {
+loadMoreButton.getElement().addEventListener(`click`, () => {
   const prevFilmsCount = showingFilmsCount;
   showingFilmsCount = showingFilmsCount + FILMS_CARDS_COUNT_BY_BUTTON;
 
   films.slice(prevFilmsCount, showingFilmsCount)
-    .forEach((film) => render(filmListWrapElement, new FilmCard(film).getElement(), RenderPosition.BEFOREEND));
+    .forEach((film) => renderFilm(film, filmListWrapElement));
 
   if (showingFilmsCount >= films.length) {
-    loadMoreButton.remove();
+    loadMoreButton.getElement().remove();
+    loadMoreButton.removeElement();
   }
 });
 
@@ -62,20 +83,8 @@ for (let item of filmsListExtraElement) {
   const filmsListExtraElementWrap = item.querySelector(`.films-list__container`);
   const filmsExtraTitle = item.querySelector(`.films-list__title`).innerHTML;
   const filmsSorted = filmsSorting(films, titleToSortKey[filmsExtraTitle]);
-  filmsSorted.slice(0, FILMS_EXTRA_CARDS_COUNT).forEach((film) => render(filmsListExtraElementWrap, new FilmCard(film).getElement(), RenderPosition.BEFOREEND));
+  filmsSorted.slice(0, FILMS_EXTRA_CARDS_COUNT).forEach((film) => renderFilm(film, filmsListExtraElementWrap));
 }
-
-render(siteMainElement, new FilmDetails(films[0]).getElement(), RenderPosition.BEFOREEND);
-
-const filmDetailsElement = siteMainElement.querySelector(`.film-details`);
-const filmDetailsCloseBtn = filmDetailsElement.querySelector(`.film-details__close-btn`);
-const filmDetailsComments = filmDetailsElement.querySelector(`.film-details__comments-list`);
-
-comments.forEach((comment) => render(filmDetailsComments, new Comment(comment).getElement(), RenderPosition.BEFOREEND));
-
-filmDetailsCloseBtn.addEventListener(`click`, () => {
-  filmDetailsElement.remove();
-});
 
 const footerStat = document.querySelector(`.footer .footer__statistics p`);
 footerStat.innerHTML = `${films.length} movies inside`;
