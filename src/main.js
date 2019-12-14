@@ -14,6 +14,19 @@ const FILMS_CARDS_COUNT_BY_BUTTON = 5;
 const FILMS_EXTRA_CARDS_COUNT = 2;
 
 const renderFilm = (film, container) => {
+  const onEscKeyDown = (evt) => {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      replacePopup();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  const replacePopup = () => {
+    filmDetailsComponent.getElement().remove();
+  };
+
   const filmComponent = new FilmCard(film);
   const filmDetailsComponent = new FilmDetails(film);
   const comments = film.comments;
@@ -24,11 +37,12 @@ const renderFilm = (film, container) => {
     render(siteMainElement, filmDetailsComponent.getElement(), RenderPosition.BEFOREEND);
     const filmDetailsComments = filmDetailsComponent.getElement().querySelector(`.film-details__comments-list`);
     comments.forEach((comment) => render(filmDetailsComments, new Comment(comment).getElement(), RenderPosition.BEFOREEND));
+    document.addEventListener(`keydown`, onEscKeyDown);
   }));
 
   const closePopupBtn = filmDetailsComponent.getElement().querySelector(`.film-details__close-btn`);
   closePopupBtn.addEventListener(`click`, () => {
-    filmDetailsComponent.getElement().remove();
+    replacePopup();
   });
 
   render(container, filmComponent.getElement(), RenderPosition.BEFOREEND);
