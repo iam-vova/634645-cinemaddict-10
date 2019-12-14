@@ -5,6 +5,7 @@ import {
   arrayShuffle,
   getTimeFromMins,
   generateRandomDate} from '../utils.js';
+import {generateComments} from "./comments";
 
 const PosterNames = [
   `made-for-each-other.png`,
@@ -61,6 +62,8 @@ const generateFilmCard = () => {
   const releaseDateMonth = releaseDate.toLocaleString(`en-US`, {month: `long`});
   const releaseDateDay = releaseDate.getDate();
 
+  const COMMENTS_COUNT = 4;
+
   return {
     poster: getRandomArrayItem(PosterNames),
     title,
@@ -78,6 +81,7 @@ const generateFilmCard = () => {
     descriptionFull: FilmDescription,
     ageRestriction: `${getRandomIntegerNumber(0, 21)}+`,
     commentsCont: getRandomIntegerNumber(0, 999),
+    comments: generateComments(COMMENTS_COUNT),
     watchlist: Math.random() > 0.5,
     history: Math.random() > 0.5,
     favorites: Math.random() > 0.5,

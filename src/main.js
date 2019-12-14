@@ -5,7 +5,6 @@ import SiteMenu from './components/site-menu.js';
 import LoadMoreButton from './components/load-more-btn.js';
 import UserRate from './components/user-rate.js';
 import Comment from "./components/comments.js";
-import {generateComments} from './mock/comments.js';
 import {generateFilmCards} from './mock/film-card.js';
 import {render, RenderPosition} from './utils.js';
 
@@ -13,26 +12,24 @@ const FILMS_CARDS_COUNT = 15;
 const FILMS_CARDS_COUNT_ON_START = 5;
 const FILMS_CARDS_COUNT_BY_BUTTON = 5;
 const FILMS_EXTRA_CARDS_COUNT = 2;
-const COMMENTS_COUNT = 4;
 
 const renderFilm = (film, container) => {
   const filmComponent = new FilmCard(film);
   const filmDetalisComponent = new FilmDetails(film);
+  const comments = film.comments;
 
   const filmActiveElements = filmComponent.getElement().querySelectorAll(`.film-card__poster, .film-card__title, .film-card__comments`);
-  const comments = generateComments(COMMENTS_COUNT);
 
   filmActiveElements.forEach((element) => element.addEventListener(`click`, () => {
     render(siteMainElement, filmDetalisComponent.getElement(), RenderPosition.BEFOREEND);
+    const filmDetailsComments = filmDetalisComponent.getElement().querySelector(`.film-details__comments-list`);
+    comments.forEach((comment) => render(filmDetailsComments, new Comment(comment).getElement(), RenderPosition.BEFOREEND));
   }));
 
   const closePopupBtn = filmDetalisComponent.getElement().querySelector(`.film-details__close-btn`);
   closePopupBtn.addEventListener(`click`, () => {
     filmDetalisComponent.getElement().remove();
   });
-
-  const filmDetailsComments = filmDetalisComponent.getElement().querySelector(`.film-details__comments-list`);
-  comments.forEach((comment) => render(filmDetailsComments, new Comment(comment).getElement(), RenderPosition.BEFOREEND));
 
   render(container, filmComponent.getElement(), RenderPosition.BEFOREEND);
 };
