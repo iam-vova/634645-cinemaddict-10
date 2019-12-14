@@ -15,20 +15,20 @@ const FILMS_EXTRA_CARDS_COUNT = 2;
 
 const renderFilm = (film, container) => {
   const filmComponent = new FilmCard(film);
-  const filmDetalisComponent = new FilmDetails(film);
+  const filmDetailsComponent = new FilmDetails(film);
   const comments = film.comments;
 
   const filmActiveElements = filmComponent.getElement().querySelectorAll(`.film-card__poster, .film-card__title, .film-card__comments`);
 
   filmActiveElements.forEach((element) => element.addEventListener(`click`, () => {
-    render(siteMainElement, filmDetalisComponent.getElement(), RenderPosition.BEFOREEND);
-    const filmDetailsComments = filmDetalisComponent.getElement().querySelector(`.film-details__comments-list`);
+    render(siteMainElement, filmDetailsComponent.getElement(), RenderPosition.BEFOREEND);
+    const filmDetailsComments = filmDetailsComponent.getElement().querySelector(`.film-details__comments-list`);
     comments.forEach((comment) => render(filmDetailsComments, new Comment(comment).getElement(), RenderPosition.BEFOREEND));
   }));
 
-  const closePopupBtn = filmDetalisComponent.getElement().querySelector(`.film-details__close-btn`);
+  const closePopupBtn = filmDetailsComponent.getElement().querySelector(`.film-details__close-btn`);
   closePopupBtn.addEventListener(`click`, () => {
-    filmDetalisComponent.getElement().remove();
+    filmDetailsComponent.getElement().remove();
   });
 
   render(container, filmComponent.getElement(), RenderPosition.BEFOREEND);
@@ -76,10 +76,11 @@ const titleToSortKey = {
 };
 
 const filmsListExtraElement = filmElement.querySelectorAll(`.films-list--extra`);
+const filmsCopy = films.slice();
 for (let item of filmsListExtraElement) {
   const filmsListExtraElementWrap = item.querySelector(`.films-list__container`);
   const filmsExtraTitle = item.querySelector(`.films-list__title`).innerHTML;
-  const filmsSorted = filmsSorting(films, titleToSortKey[filmsExtraTitle]);
+  const filmsSorted = filmsSorting(filmsCopy, titleToSortKey[filmsExtraTitle]);
   filmsSorted.slice(0, FILMS_EXTRA_CARDS_COUNT).forEach((film) => renderFilm(film, filmsListExtraElementWrap));
 }
 
