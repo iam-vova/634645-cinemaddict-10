@@ -1,30 +1,6 @@
-import {generateComments} from '../mock/comments.js';
+import {createElement} from "../utils.js";
 
-const COMMENTS_COUNT = 4;
-
-const createComment = (comments) => {
-  return comments
-    .map((comment) => {
-      return (
-        ` <li class="film-details__comment">
-            <span class="film-details__comment-emoji">
-              <img src="./images/emoji/${comment.emoji}" width="55" height="55" alt="emoji">
-            </span>
-            <div>
-              <p class="film-details__comment-text">${comment.message}</p>
-                <p class="film-details__comment-info">
-                  <span class="film-details__comment-author">${comment.userName}</span>
-                  <span class="film-details__comment-day">${comment.date}</span>
-                  <button class="film-details__comment-delete">Delete</button>
-                </p>
-            </div>
-          </li>`
-      );
-    })
-    .join(`\n`);
-};
-
-export const createFilmDetailsTemplate = (film) => {
+const createFilmDetailsTemplate = (film) => {
   const {poster,
     title,
     titleOriginal,
@@ -39,8 +15,6 @@ export const createFilmDetailsTemplate = (film) => {
     descriptionFull,
     ageRestriction,
     commentsCont} = film;
-  const comments = generateComments(COMMENTS_COUNT);
-  const commentsMarkup = createComment(comments);
 
   return (
     `<section class="film-details">
@@ -125,7 +99,7 @@ export const createFilmDetailsTemplate = (film) => {
             <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentsCont}</span></h3>
     
             <ul class="film-details__comments-list">
-              ${commentsMarkup}
+
             </ul>
     
             <div class="film-details__new-comment">
@@ -163,3 +137,28 @@ export const createFilmDetailsTemplate = (film) => {
     </section>`
   );
 };
+
+export default class FilmDetails {
+  constructor(film) {
+    this._film = film;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmDetailsTemplate(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+

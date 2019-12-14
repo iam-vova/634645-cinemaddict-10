@@ -1,6 +1,7 @@
 import {filterCount} from '../mock/filter.js';
+import {createElement} from "../utils.js";
 
-export const createUserRateTemplate = (films) => {
+const createUserRateTemplate = (films) => {
   return (
     `<section class="header__profile profile">
       <p class="profile__rating">${filterCount(films, `history`)}</p>
@@ -8,3 +9,27 @@ export const createUserRateTemplate = (films) => {
     </section>`
   );
 };
+
+export default class UserRate {
+  constructor(films) {
+    this._films = films;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createUserRateTemplate(this._films);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
