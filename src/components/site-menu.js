@@ -1,5 +1,5 @@
+import AbstractComponent from './abstract-component.js';
 import {filterCount} from '../mock/filter.js';
-import {createElement} from '../utils/render.js';
 
 const createSiteMenuTemplate = (films) => {
   return (
@@ -13,26 +13,14 @@ const createSiteMenuTemplate = (films) => {
   );
 };
 
-export default class SiteMenu {
-  constructor(films) {
-    this._films = films;
+export default class SiteMenu extends AbstractComponent {
+  constructor(film) {
+    super();
 
-    this._element = null;
+    this._film = film;
   }
 
   getTemplate() {
-    return createSiteMenuTemplate(this._films);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+    return createSiteMenuTemplate(this._film);
   }
 }
