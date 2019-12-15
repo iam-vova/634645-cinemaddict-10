@@ -7,7 +7,7 @@ import UserRate from './components/user-rate.js';
 import Comment from "./components/comments.js";
 import NoFilms from "./components/no-films.js";
 import {generateFilmCards} from './mock/film-card.js';
-import {render, RenderPosition} from './utils.js';
+import {render, RenderPosition} from './utils/render.js';
 
 const FILMS_CARDS_COUNT = 15;
 const FILMS_CARDS_COUNT_ON_START = 5;

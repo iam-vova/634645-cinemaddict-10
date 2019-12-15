@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import {createElement} from '../utils/render.js';
 
 const createFilmDetailsTemplate = (film) => {
   const {poster,
