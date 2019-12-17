@@ -1,5 +1,5 @@
+import AbstractComponent from './abstract-component.js';
 import {filterCount} from '../mock/filter.js';
-import {createElement} from "../utils.js";
 
 const createUserRateTemplate = (films) => {
   return (
@@ -10,26 +10,14 @@ const createUserRateTemplate = (films) => {
   );
 };
 
-export default class UserRate {
-  constructor(films) {
-    this._films = films;
+export default class UserRate extends AbstractComponent {
+  constructor(film) {
+    super();
 
-    this._element = null;
+    this._film = film;
   }
 
   getTemplate() {
-    return createUserRateTemplate(this._films);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+    return createUserRateTemplate(this._film);
   }
 }

@@ -4,8 +4,8 @@ import {
   getRandomArrayItem,
   arrayShuffle,
   getTimeFromMins,
-  generateRandomDate} from '../utils.js';
-import {generateComments} from "./comments";
+  generateRandomDate} from '../utils/common.js';
+import {generateComments} from "./comments.js";
 
 const PosterNames = [
   `made-for-each-other.png`,
