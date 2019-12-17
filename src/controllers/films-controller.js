@@ -2,6 +2,7 @@ import FilmCard from '../components/film-card.js';
 import FilmDetails from '../components/film-details.js';
 import FilmsExtra from '../components/films-extra.js';
 import NoFilms from '../components/no-films.js';
+import SortComponent, {SortType} from '../components/sort.js';
 import LoadMoreButton from '../components/load-more-btn.js';
 import Comment from '../components/comments.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
@@ -48,6 +49,7 @@ export default class FilmsController {
     this._container = container;
 
     this._noFilmsComponent = new NoFilms();
+    this._sortComponent = new SortComponent();
     this._loadMoreButtonComponent = new LoadMoreButton();
   }
 
@@ -62,6 +64,8 @@ export default class FilmsController {
     }
 
     let showingFilmsCount = FILMS_CARDS_COUNT_ON_START;
+
+    render(container, this._sortComponent, RenderPosition.BEFORE);
 
     films.slice(0, showingFilmsCount).forEach((film) => renderFilm(film, filmListWrapElement));
 
