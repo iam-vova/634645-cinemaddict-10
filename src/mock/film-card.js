@@ -58,9 +58,6 @@ const generateFilmCard = () => {
   const title = FilmNamesCopy.pop();
 
   const releaseDate = generateRandomDate();
-  const releaseDateYear = releaseDate.getFullYear();
-  const releaseDateMonth = releaseDate.toLocaleString(`en-US`, {month: `long`});
-  const releaseDateDay = releaseDate.getDate();
 
   const COMMENTS_COUNT = 4;
 
@@ -72,8 +69,8 @@ const generateFilmCard = () => {
     producer: getRandomArrayItem(producers),
     screenwriter: getRandomArrayItem(screenwriters),
     actors: arrayShuffle(actors).slice(0, getRandomIntegerNumber(2, 5)).join(`, `),
-    releaseDate: `${releaseDateDay} ${releaseDateMonth} ${releaseDateYear}`,
-    year: releaseDateYear,
+    releaseDate,
+    year: releaseDate.getFullYear(),
     duration,
     genre: arrayShuffle(filmGenres).slice(0, 3),
     country: getRandomArrayItem(countries),

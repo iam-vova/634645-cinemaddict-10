@@ -16,6 +16,10 @@ const createFilmDetailsTemplate = (film) => {
     ageRestriction,
     commentsCont} = film;
 
+  const releaseDateYear = releaseDate.getFullYear();
+  const releaseDateMonth = releaseDate.toLocaleString(`en-US`, {month: `long`});
+  const releaseDateDay = releaseDate.getDate();
+
   return (
     `<section class="film-details">
       <form class="film-details__inner" action="" method="get">
@@ -57,7 +61,7 @@ const createFilmDetailsTemplate = (film) => {
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Release Date</td>
-                  <td class="film-details__cell">${releaseDate}</td>
+                  <td class="film-details__cell">${releaseDateDay} ${releaseDateMonth} ${releaseDateYear}</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Runtime</td>

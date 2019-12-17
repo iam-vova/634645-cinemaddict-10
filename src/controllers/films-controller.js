@@ -59,7 +59,7 @@ export default class FilmsController {
 
   render(films) {
     const renderLoadMoreButton = () => {
-      if (showingFilmsCount >= films.length) {
+      if (showingFilmsCount >= filmsRelevant.length) {
         remove(this._loadMoreButtonComponent);
       }
 
@@ -69,19 +69,21 @@ export default class FilmsController {
         const prevFilmsCount = showingFilmsCount;
         showingFilmsCount = showingFilmsCount + FILMS_CARDS_COUNT_BY_BUTTON;
 
-        renderFilms(films.slice(prevFilmsCount, showingFilmsCount), filmListWrapElement);
+        renderFilms(filmsRelevant.slice(prevFilmsCount, showingFilmsCount), filmListWrapElement);
 
-        if (showingFilmsCount >= films.length) {
+        if (showingFilmsCount >= filmsRelevant.length) {
           remove(this._loadMoreButtonComponent);
         }
       });
     };
 
+    let filmsRelevant = films.slice();
+
     const container = this._container.getElement();
     const filmListElement = this._container.getElement().querySelector(`.films-list`);
     const filmListWrapElement = this._container.getElement().querySelector(`.films-list__container`);
 
-    if (films.length === 0) {
+    if (filmsRelevant.length === 0) {
       render(filmListWrapElement, this._noFilmsComponent, RenderPosition.BEFOREEND);
       return;
     }
@@ -89,7 +91,7 @@ export default class FilmsController {
     let showingFilmsCount = FILMS_CARDS_COUNT_ON_START;
 
     render(container, this._sortComponent, RenderPosition.BEFORE);
-    renderFilms(films.slice(0, showingFilmsCount), filmListWrapElement);
+    renderFilms(filmsRelevant.slice(0, showingFilmsCount), filmListWrapElement);
     renderLoadMoreButton();
 
     const filmsSorting = (filmsArr, key) => {
@@ -109,5 +111,12 @@ export default class FilmsController {
       render(container, FilmsExtraContainer, RenderPosition.BEFOREEND);
       renderFilms(filmsSorted.slice(0, FILMS_EXTRA_CARDS_COUNT), filmsListExtraElementWrap);
     }
+
+    this._sortComponent.setSortTypeChangeHandler((sortType) => {
+      filmsRelevant = (sortType === SortType.DEFAULT) ? films.slice() : filmsSorting(filmsRelevant, sortType);
+
+      filmListWrapElement.innerHTML = ``;
+      renderFilms(filmsRelevant.slice(0, showingFilmsCount), filmListWrapElement);
+    });
   }
 }

@@ -1,8 +1,8 @@
 import AbstractComponent from './abstract-component.js';
 
 export const SortType = {
-  BY_DATE: `by-date`,
-  BY_RATING: `by-rating`,
+  BY_DATE: `releaseDate`,
+  BY_RATING: `rate`,
   DEFAULT: `default`,
 };
 
