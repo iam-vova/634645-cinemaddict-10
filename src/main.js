@@ -1,7 +1,7 @@
 import SiteMenu from './components/site-menu.js';
 import UserRate from './components/user-rate.js';
 import Films from './components/films.js';
-import FilmsController from './controllers/films-controller.js';
+import PageController from './controllers/films-controller.js';
 import {generateFilmCards} from './mock/film-card.js';
 import {render, RenderPosition} from './utils/render.js';
 
@@ -17,8 +17,8 @@ render(siteHeaderElement, new UserRate(films), RenderPosition.BEFOREEND);
 const filmsComponent = new Films();
 render(siteMainElement, filmsComponent, RenderPosition.BEFOREEND);
 
-const filmsController = new FilmsController(filmsComponent);
-filmsController.render(films);
+const pageController = new PageController(filmsComponent);
+pageController.render(films);
 
 const footerStat = document.querySelector(`.footer .footer__statistics p`);
 footerStat.innerHTML = `${films.length} movies inside`;

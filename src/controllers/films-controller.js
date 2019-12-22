@@ -1,54 +1,24 @@
-import FilmCard from '../components/film-card.js';
-import FilmDetails from '../components/film-details.js';
 import FilmsExtra from '../components/films-extra.js';
 import NoFilms from '../components/no-films.js';
 import SortComponent, {SortType} from '../components/sort.js';
 import LoadMoreButton from '../components/load-more-btn.js';
-import Comment from '../components/comments.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
+import MovieController from './film.js';
 
 const FILMS_CARDS_COUNT_ON_START = 5;
 const FILMS_CARDS_COUNT_BY_BUTTON = 5;
 const FILMS_EXTRA_CARDS_COUNT = 2;
 
-const renderFilm = (film, container) => {
-  const onEscKeyDown = (evt) => {
-    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-
-    if (isEscKey) {
-      replacePopup();
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    }
-  };
-
-  const replacePopup = () => {
-    remove(filmDetailsComponent);
-  };
-
-  const siteMainElement = document.querySelector(`.main`);
-  const filmComponent = new FilmCard(film);
-  const filmDetailsComponent = new FilmDetails(film);
-  const comments = film.comments;
-
-  filmComponent.setFilmCardClickHandler(() => {
-    render(siteMainElement, filmDetailsComponent, RenderPosition.BEFOREEND);
-    const filmDetailsComments = filmDetailsComponent.getElement().querySelector(`.film-details__comments-list`);
-    comments.forEach((comment) => render(filmDetailsComments, new Comment(comment), RenderPosition.BEFOREEND));
-
-    document.addEventListener(`keydown`, onEscKeyDown);
-    filmDetailsComponent.setFilmDetailsCloseHandler(() => {
-      replacePopup();
-    });
-  });
-
-  render(container, filmComponent, RenderPosition.BEFOREEND);
-};
-
 const renderFilms = (films, container) => {
-  films.forEach((film) => renderFilm(film, container));
+  return films.map((film) => {
+    const movieController = new MovieController(container);
+    movieController.render(film);
+
+    return movieController;
+  });
 };
 
-export default class FilmsController {
+export default class PageController {
   constructor(container) {
     this._container = container;
 
