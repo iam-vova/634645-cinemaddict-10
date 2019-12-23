@@ -160,6 +160,11 @@ export default class FilmDetails extends AbstractComponent {
     super();
 
     this._film = film;
+
+    this._isWatchlist = film.watchlist;
+    this._isWatched = film.history;
+    this._isFavorite = film.favorites;
+    this._subscribeOnEvents();
   }
 
   getTemplate() {
@@ -169,5 +174,30 @@ export default class FilmDetails extends AbstractComponent {
   setFilmDetailsCloseHandler(handler) {
     this.getElement().querySelector(`.film-details__close-btn`)
       .addEventListener(`click`, handler);
+  }
+
+  _subscribeOnEvents() {
+    const element = this.getElement();
+
+    element.querySelector(`.film-details__control-label--watchlist`)
+      .addEventListener(`click`, () => {
+        this._isWatchlist = !this._isWatchlist;
+
+        this.rerender();
+      });
+
+    element.querySelector(`.film-details__control-label--watched`)
+      .addEventListener(`click`, () => {
+        this._isWatched = !this._isWatched;
+
+        this.rerender();
+      });
+
+    element.querySelector(`.film-details__control-label--favorite`)
+      .addEventListener(`click`, () => {
+        this._isFavorite = !this._isFavorite;
+
+        this.rerender();
+      });
   }
 }

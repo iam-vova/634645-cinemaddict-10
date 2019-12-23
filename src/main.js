@@ -1,7 +1,7 @@
 import SiteMenu from './components/site-menu.js';
 import UserRate from './components/user-rate.js';
 import Films from './components/films.js';
-import PageController from './controllers/films-controller.js';
+import PageController from './controllers/page-controller.js';
 import {generateFilmCards} from './mock/film-card.js';
 import {render, RenderPosition} from './utils/render.js';
 
