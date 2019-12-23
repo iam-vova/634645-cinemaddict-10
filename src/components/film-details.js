@@ -34,9 +34,9 @@ const createFilmDetailsTemplate = (film) => {
   const releaseDateMonth = releaseDate.toLocaleString(`en-US`, {month: `long`});
   const releaseDateDay = releaseDate.getDate();
 
-  const watchlistInput = createFilmControlsMarkup(`watchlist`, film.watchlist);
-  const historyInput = createFilmControlsMarkup(`watched`, film.history);
-  const favoritesInput = createFilmControlsMarkup(`favorite`, film.favorites);
+  const watchlistInput = createFilmControlsMarkup(`watchlist`, film.toWatch);
+  const historyInput = createFilmControlsMarkup(`watched`, film.isWatched);
+  const favoritesInput = createFilmControlsMarkup(`favorite`, film.isFavorite);
 
   return (
     `<section class="film-details">
@@ -161,9 +161,9 @@ export default class FilmDetails extends AbstractComponent {
 
     this._film = film;
 
-    this._isWatchlist = film.watchlist;
-    this._isWatched = film.history;
-    this._isFavorite = film.favorites;
+    this._toWatch = film.toWatch;
+    this._isWatched = film.isWatched;
+    this._isFavorite = film.isFavorite;
     this._subscribeOnEvents();
   }
 
@@ -181,7 +181,7 @@ export default class FilmDetails extends AbstractComponent {
 
     element.querySelector(`.film-details__control-label--watchlist`)
       .addEventListener(`click`, () => {
-        this._isWatchlist = !this._isWatchlist;
+        this._toWatch = !this._toWatch;
 
         this.rerender();
       });

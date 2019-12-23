@@ -79,9 +79,9 @@ const generateFilmCard = () => {
     ageRestriction: `${getRandomIntegerNumber(0, 21)}+`,
     commentsCont: getRandomIntegerNumber(0, 999),
     comments: generateComments(COMMENTS_COUNT),
-    watchlist: Math.random() > 0.5,
-    history: Math.random() > 0.5,
-    favorites: Math.random() > 0.5,
+    toWatch: Math.random() > 0.5,
+    isWatched: Math.random() > 0.5,
+    isFavorite: Math.random() > 0.5,
   };
 };
 
