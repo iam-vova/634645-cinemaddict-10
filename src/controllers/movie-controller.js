@@ -1,7 +1,7 @@
 import FilmCard from '../components/film-card.js';
 import FilmDetails from '../components/film-details.js';
-import Comment from '../components/comments.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
+import {replace} from "../../../taskmanager-10/src/utils/render";
 
 export default class MovieController {
   constructor(container, onDataChange) {
@@ -10,6 +10,8 @@ export default class MovieController {
 
     this._filmComponent = null;
     this._filmDetailsComponent = null;
+
+    this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
   render(film) {
@@ -37,33 +39,35 @@ export default class MovieController {
       }));
     });
 
-    const onEscKeyDown = (evt) => {
-      const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-
-      if (isEscKey) {
-        replacePopup();
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      }
-    };
-
-    const replacePopup = () => {
-      remove(this._filmDetailsComponent);
-    };
-
     const siteMainElement = document.querySelector(`.main`);
-    const comments = film.comments;
+    // const comments = film.comments;
 
     this._filmComponent.setFilmCardClickHandler(() => {
       render(siteMainElement, this._filmDetailsComponent, RenderPosition.BEFOREEND);
-      const filmDetailsComments = this._filmDetailsComponent.getElement().querySelector(`.film-details__comments-list`);
-      comments.forEach((comment) => render(filmDetailsComments, new Comment(comment), RenderPosition.BEFOREEND));
-
-      document.addEventListener(`keydown`, onEscKeyDown);
+      document.addEventListener(`keydown`, this._onEscKeyDown);
       this._filmDetailsComponent.setFilmDetailsCloseHandler(() => {
-        replacePopup();
+        this._replacePopup();
       });
     });
 
-    render(this._container, this._filmComponent, RenderPosition.BEFOREEND);
+    if (oldFilmComponent && oldFilmDetailsComponent) {
+      replace(this._filmComponent, oldFilmComponent);
+      replace(this._filmDetailsComponent, oldFilmDetailsComponent);
+    } else {
+      render(this._container, this._filmComponent, RenderPosition.BEFOREEND);
+    }
+  }
+
+  _replacePopup() {
+    remove(this._filmDetailsComponent);
+  }
+
+  _onEscKeyDown(evt) {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      this._replacePopup();
+      document.removeEventListener(`keydown`, this._onEscKeyDown);
+    }
   }
 }

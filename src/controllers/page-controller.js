@@ -29,6 +29,9 @@ export default class PageController {
     this._loadMoreButtonComponent = new LoadMoreButton();
 
     this._onDataChange = this._onDataChange.bind(this);
+    this._onSortTypeChange = this._onSortTypeChange.bind(this);
+
+    this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChange);
   }
 
   render(films) {
@@ -45,32 +48,23 @@ export default class PageController {
 
     render(container, this._sortComponent, RenderPosition.BEFORE);
     renderFilms(this._filmsRelevant.slice(0, this._showingFilmsCount), this._filmListWrapElement, this._onDataChange);
-    this._renderLoadMoreButton();
 
-    const filmsSorting = (filmsArr, key) => {
-      return filmsArr.sort((a, b) => b[key] - a[key]);
-    };
+    this._renderLoadMoreButton();
 
     const titleToSortKey = {
       "Top rated": `rate`,
       "Most commented": `commentsCont`,
     };
+
     const extraTitles = Object.keys(titleToSortKey);
 
     for (let title of extraTitles) {
-      const filmsSorted = filmsSorting(this._films.slice(), titleToSortKey[title]);
+      const filmsSorted = this._filmsSorting(this._films.slice(), titleToSortKey[title]);
       const FilmsExtraContainer = new FilmsExtra(title);
       const filmsListExtraElementWrap = FilmsExtraContainer.getElement().querySelector(`.films-list__container`);
-      render(container, FilmsExtraContainer, RenderPosition.BEFOREEND);
+      render(this._container.getElement(), FilmsExtraContainer, RenderPosition.BEFOREEND);
       renderFilms(filmsSorted.slice(0, FILMS_EXTRA_CARDS_COUNT), filmsListExtraElementWrap, this._onDataChange);
     }
-
-    this._sortComponent.setSortTypeChangeHandler((sortType) => {
-      this._filmsRelevant = (sortType === SortType.DEFAULT) ? this._films.slice() : filmsSorting(this._filmsRelevant, sortType);
-
-      this._filmListWrapElement.innerHTML = ``;
-      renderFilms(this._filmsRelevant.slice(0, this._showingFilmsCount), this._filmListWrapElement, this._onDataChange);
-    });
   }
 
   _renderLoadMoreButton() {
@@ -104,5 +98,16 @@ export default class PageController {
     this._films = [].concat(this._films.slice(0, index), newData, this._films.slice(index + 1));
 
     movieController.render(this._films[index]);
+  }
+
+  _onSortTypeChange(sortType) {
+    this._filmsRelevant = (sortType === SortType.DEFAULT) ? this._films.slice() : this._filmsSorting(this._filmsRelevant, sortType);
+
+    this._filmListWrapElement.innerHTML = ``;
+    renderFilms(this._filmsRelevant.slice(0, this._showingFilmsCount), this._filmListWrapElement, this._onDataChange);
+  }
+
+  _filmsSorting(filmsArr, key) {
+    return filmsArr.sort((a, b) => b[key] - a[key]);
   }
 }

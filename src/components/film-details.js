@@ -1,4 +1,6 @@
-import AbstractComponent from './abstract-component.js';
+import AbstractSmartComponent from './abstract-smart-component.js';
+import Comment from '../components/comments.js';
+import {render, RenderPosition} from '../utils/render.js';
 
 const checkboxNameToLabel = {
   watchlist: `Add to watchlist`,
@@ -155,15 +157,17 @@ const createFilmDetailsTemplate = (film) => {
   );
 };
 
-export default class FilmDetails extends AbstractComponent {
+export default class FilmDetails extends AbstractSmartComponent {
   constructor(film) {
     super();
 
     this._film = film;
+    this._comments = film.comments;
 
     this._toWatch = film.toWatch;
     this._isWatched = film.isWatched;
     this._isFavorite = film.isFavorite;
+
     this._subscribeOnEvents();
   }
 
@@ -176,8 +180,22 @@ export default class FilmDetails extends AbstractComponent {
       .addEventListener(`click`, handler);
   }
 
+  recoveryListeners() {
+    this._subscribeOnEvents();
+  }
+
+  rerender() {
+    super.rerender();
+  }
+
+  renderComments() {
+    this._filmDetailsComments = this.getElement().querySelector(`.film-details__comments-list`);
+    this._comments.forEach((comment) => render(this._filmDetailsComments, new Comment(comment), RenderPosition.BEFOREEND));
+  }
+
   _subscribeOnEvents() {
     const element = this.getElement();
+    this.renderComments();
 
     element.querySelector(`.film-details__control-label--watchlist`)
       .addEventListener(`click`, () => {
