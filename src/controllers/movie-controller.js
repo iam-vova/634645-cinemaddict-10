@@ -40,14 +40,11 @@ export default class MovieController {
     });
 
     const siteMainElement = document.querySelector(`.main`);
-    // const comments = film.comments;
 
     this._filmComponent.setFilmCardClickHandler(() => {
       render(siteMainElement, this._filmDetailsComponent, RenderPosition.BEFOREEND);
       document.addEventListener(`keydown`, this._onEscKeyDown);
-      this._filmDetailsComponent.setFilmDetailsCloseHandler(() => {
-        this._replacePopup();
-      });
+      this._filmDetailsComponent.subscribeOnEvents();
     });
 
     if (oldFilmComponent && oldFilmDetailsComponent) {

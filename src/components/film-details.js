@@ -1,6 +1,6 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
 import Comment from '../components/comments.js';
-import {render, RenderPosition} from '../utils/render.js';
+import {render, remove, RenderPosition} from '../utils/render.js';
 
 const checkboxNameToLabel = {
   watchlist: `Add to watchlist`,
@@ -167,21 +167,14 @@ export default class FilmDetails extends AbstractSmartComponent {
     this._toWatch = film.toWatch;
     this._isWatched = film.isWatched;
     this._isFavorite = film.isFavorite;
-
-    this._subscribeOnEvents();
   }
 
   getTemplate() {
     return createFilmDetailsTemplate(this._film);
   }
 
-  setFilmDetailsCloseHandler(handler) {
-    this.getElement().querySelector(`.film-details__close-btn`)
-      .addEventListener(`click`, handler);
-  }
-
   recoveryListeners() {
-    this._subscribeOnEvents();
+    this.subscribeOnEvents();
   }
 
   rerender() {
@@ -193,7 +186,7 @@ export default class FilmDetails extends AbstractSmartComponent {
     this._comments.forEach((comment) => render(this._filmDetailsComments, new Comment(comment), RenderPosition.BEFOREEND));
   }
 
-  _subscribeOnEvents() {
+  subscribeOnEvents() {
     const element = this.getElement();
     this.renderComments();
 
@@ -216,6 +209,11 @@ export default class FilmDetails extends AbstractSmartComponent {
         this._isFavorite = !this._isFavorite;
 
         this.rerender();
+      });
+
+    element.querySelector(`.film-details__close-btn`)
+      .addEventListener(`click`, () => {
+        remove(this);
       });
   }
 }
