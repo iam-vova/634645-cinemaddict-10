@@ -39,7 +39,7 @@ const FilmNamesCopy = arrayShuffle(FilmNames.slice());
 
 const getRandomRating = () => {
   const minRate = 0.1;
-  const maxRate = 10;
+  const maxRate = 9;
   return getRandomFloatNumber(minRate, maxRate).toFixed(1);
 };
 

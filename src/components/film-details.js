@@ -1,5 +1,6 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
 import Comment from '../components/comments.js';
+import FilmDetailsMiddle from '../components/film-user-rate.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
 
 const checkboxNameToLabel = {
@@ -188,7 +189,10 @@ export default class FilmDetails extends AbstractSmartComponent {
 
   subscribeOnEvents() {
     const element = this.getElement();
+    this._filmDetailsMiddleComponent = new FilmDetailsMiddle(this._film);
+
     this.renderComments();
+    this._showUserRateMiddle();
 
     element.querySelector(`.film-details__control-label--watchlist`)
       .addEventListener(`click`, () => {
@@ -215,5 +219,14 @@ export default class FilmDetails extends AbstractSmartComponent {
       .addEventListener(`click`, () => {
         remove(this);
       });
+  }
+
+  _showUserRateMiddle() {
+    if (this._isWatched) {
+      this._commnetsContainer = this.getElement().querySelector(`.form-details__bottom-container`);
+      render(this._commnetsContainer, this._filmDetailsMiddleComponent, RenderPosition.BEFORE);
+    } else {
+      remove(this._filmDetailsMiddleComponent);
+    }
   }
 }
