@@ -3,10 +3,16 @@ import FilmDetails from '../components/film-details.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
 import {replace} from "../../../taskmanager-10/src/utils/render";
 
+const Mode = {
+  DEFAULT: `default`,
+  DETAILS: `details`,
+};
+
 export default class MovieController {
-  constructor(container, onDataChange) {
+  constructor(container, onDataChange, onViewChange) {
     this._container = container;
     this._onDataChange = onDataChange;
+    this._onViewChange = onViewChange;
 
     this._filmComponent = null;
     this._filmDetailsComponent = null;
@@ -42,6 +48,8 @@ export default class MovieController {
     const siteMainElement = document.querySelector(`.main`);
 
     this._filmComponent.setFilmCardClickHandler(() => {
+      this._onViewChange();
+      this._mode = Mode.DETAILS;
       render(siteMainElement, this._filmDetailsComponent, RenderPosition.BEFOREEND);
       document.addEventListener(`keydown`, this._onEscKeyDown);
       this._filmDetailsComponent.subscribeOnEvents();
@@ -55,8 +63,16 @@ export default class MovieController {
     }
   }
 
+  setDefaultView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._replacePopup();
+    }
+  }
+
   _replacePopup() {
     remove(this._filmDetailsComponent);
+
+    this._mode = Mode.DEFAULT;
   }
 
   _onEscKeyDown(evt) {
