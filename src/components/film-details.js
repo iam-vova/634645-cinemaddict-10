@@ -164,10 +164,6 @@ export default class FilmDetails extends AbstractSmartComponent {
 
     this._film = film;
     this._comments = film.comments;
-
-    this._toWatch = film.toWatch;
-    this._isWatched = film.isWatched;
-    this._isFavorite = film.isFavorite;
   }
 
   getTemplate() {
@@ -196,21 +192,21 @@ export default class FilmDetails extends AbstractSmartComponent {
 
     element.querySelector(`.film-details__control-label--watchlist`)
       .addEventListener(`click`, () => {
-        this._toWatch = !this._toWatch;
+        this._film.toWatch = !this._film.toWatch;
 
         this.rerender();
       });
 
     element.querySelector(`.film-details__control-label--watched`)
       .addEventListener(`click`, () => {
-        this._isWatched = !this._isWatched;
+        this._film.isWatched = !this._film.isWatched;
 
         this.rerender();
       });
 
     element.querySelector(`.film-details__control-label--favorite`)
       .addEventListener(`click`, () => {
-        this._isFavorite = !this._isFavorite;
+        this._film.isFavorite = !this._film.isFavorite;
 
         this.rerender();
       });
@@ -219,10 +215,21 @@ export default class FilmDetails extends AbstractSmartComponent {
       .addEventListener(`click`, () => {
         remove(this);
       });
+
+    element.querySelectorAll(`.film-details__emoji-label img`).forEach((emoji) =>
+      emoji.addEventListener(`click`, () => {
+        const emojiContainer = element.querySelector(`.film-details__add-emoji-label`);
+        emojiContainer.innerHTML = ``;
+        const bigEmoji = emoji.cloneNode(false);
+        bigEmoji.width = 55;
+        bigEmoji.height = 55;
+        emojiContainer.appendChild(bigEmoji);
+      })
+    );
   }
 
   _showUserRateMiddle() {
-    if (this._isWatched) {
+    if (this._film.isWatched) {
       this._commnetsContainer = this.getElement().querySelector(`.form-details__bottom-container`);
       render(this._commnetsContainer, this._filmDetailsMiddleComponent, RenderPosition.BEFORE);
     } else {
