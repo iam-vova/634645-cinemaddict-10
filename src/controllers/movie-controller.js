@@ -1,7 +1,6 @@
 import FilmCard from '../components/film-card.js';
 import FilmDetails from '../components/film-details.js';
-import {render, remove, RenderPosition} from '../utils/render.js';
-import {replace} from "../../../taskmanager-10/src/utils/render";
+import {render, remove, replace, RenderPosition} from '../utils/render.js';
 
 const Mode = {
   DEFAULT: `default`,
