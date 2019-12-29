@@ -39,7 +39,7 @@ const FilmNamesCopy = arrayShuffle(FilmNames.slice());
 
 const getRandomRating = () => {
   const minRate = 0.1;
-  const maxRate = 10;
+  const maxRate = 9;
   return getRandomFloatNumber(minRate, maxRate).toFixed(1);
 };
 
@@ -79,9 +79,9 @@ const generateFilmCard = () => {
     ageRestriction: `${getRandomIntegerNumber(0, 21)}+`,
     commentsCont: getRandomIntegerNumber(0, 999),
     comments: generateComments(COMMENTS_COUNT),
-    watchlist: Math.random() > 0.5,
-    history: Math.random() > 0.5,
-    favorites: Math.random() > 0.5,
+    toWatch: Math.random() > 0.5,
+    isWatched: Math.random() > 0.5,
+    isFavorite: Math.random() > 0.5,
   };
 };
 

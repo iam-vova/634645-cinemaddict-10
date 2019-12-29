@@ -1,4 +1,21 @@
-import AbstractComponent from './abstract-component.js';
+import AbstractSmartComponent from './abstract-smart-component.js';
+import Comment from '../components/comments.js';
+import FilmDetailsMiddle from '../components/film-user-rate.js';
+import {render, remove, RenderPosition} from '../utils/render.js';
+
+const checkboxNameToLabel = {
+  watchlist: `Add to watchlist`,
+  watched: `Already watched`,
+  favorite: `Add to favorites`
+};
+
+const createFilmControlsMarkup = (label, isActive) => {
+  return (
+    `<input type="checkbox" class="film-details__control-input visually-hidden" id="${label}" name="${label}"
+        ${isActive ? `checked` : ``}>
+    <label for="${label}" class="film-details__control-label film-details__control-label--${label}">${checkboxNameToLabel[label]}</label>`
+  );
+};
 
 const createFilmDetailsTemplate = (film) => {
   const {poster,
@@ -19,6 +36,10 @@ const createFilmDetailsTemplate = (film) => {
   const releaseDateYear = releaseDate.getFullYear();
   const releaseDateMonth = releaseDate.toLocaleString(`en-US`, {month: `long`});
   const releaseDateDay = releaseDate.getDate();
+
+  const watchlistInput = createFilmControlsMarkup(`watchlist`, film.toWatch);
+  const historyInput = createFilmControlsMarkup(`watched`, film.isWatched);
+  const favoritesInput = createFilmControlsMarkup(`favorite`, film.isFavorite);
 
   return (
     `<section class="film-details">
@@ -87,14 +108,9 @@ const createFilmDetailsTemplate = (film) => {
           </div>
     
           <section class="film-details__controls">
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
-            <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
-    
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
-            <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
-    
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
-            <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
+            ${watchlistInput}
+            ${historyInput}
+            ${favoritesInput}
           </section>
         </div>
     
@@ -142,19 +158,82 @@ const createFilmDetailsTemplate = (film) => {
   );
 };
 
-export default class FilmDetails extends AbstractComponent {
+export default class FilmDetails extends AbstractSmartComponent {
   constructor(film) {
     super();
 
     this._film = film;
+    this._comments = film.comments;
   }
 
   getTemplate() {
     return createFilmDetailsTemplate(this._film);
   }
 
-  setFilmDetailsCloseHandler(handler) {
-    this.getElement().querySelector(`.film-details__close-btn`)
-      .addEventListener(`click`, handler);
+  recoveryListeners() {
+    this.subscribeOnEvents();
+  }
+
+  rerender() {
+    super.rerender();
+  }
+
+  renderComments() {
+    this._filmDetailsComments = this.getElement().querySelector(`.film-details__comments-list`);
+    this._comments.forEach((comment) => render(this._filmDetailsComments, new Comment(comment), RenderPosition.BEFOREEND));
+  }
+
+  subscribeOnEvents() {
+    const element = this.getElement();
+    this._filmDetailsMiddleComponent = new FilmDetailsMiddle(this._film);
+
+    this.renderComments();
+    this._showUserRateMiddle();
+
+    element.querySelector(`.film-details__control-label--watchlist`)
+      .addEventListener(`click`, () => {
+        this._film.toWatch = !this._film.toWatch;
+
+        this.rerender();
+      });
+
+    element.querySelector(`.film-details__control-label--watched`)
+      .addEventListener(`click`, () => {
+        this._film.isWatched = !this._film.isWatched;
+
+        this.rerender();
+      });
+
+    element.querySelector(`.film-details__control-label--favorite`)
+      .addEventListener(`click`, () => {
+        this._film.isFavorite = !this._film.isFavorite;
+
+        this.rerender();
+      });
+
+    element.querySelector(`.film-details__close-btn`)
+      .addEventListener(`click`, () => {
+        remove(this);
+      });
+
+    element.querySelectorAll(`.film-details__emoji-label img`).forEach((emoji) =>
+      emoji.addEventListener(`click`, () => {
+        const emojiContainer = element.querySelector(`.film-details__add-emoji-label`);
+        emojiContainer.innerHTML = ``;
+        const bigEmoji = emoji.cloneNode(false);
+        bigEmoji.width = 55;
+        bigEmoji.height = 55;
+        emojiContainer.appendChild(bigEmoji);
+      })
+    );
+  }
+
+  _showUserRateMiddle() {
+    if (this._film.isWatched) {
+      this._commnetsContainer = this.getElement().querySelector(`.form-details__bottom-container`);
+      render(this._commnetsContainer, this._filmDetailsMiddleComponent, RenderPosition.BEFORE);
+    } else {
+      remove(this._filmDetailsMiddleComponent);
+    }
   }
 }
