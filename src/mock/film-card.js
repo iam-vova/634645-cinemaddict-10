@@ -93,5 +93,3 @@ const generateFilmCards = (count) => {
 };
 
 export {generateFilmCard, generateFilmCards};
-
-
