@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const getRandomFloatNumber = (min, max) => {
   return Math.random() * (max - min) + min;
 };
@@ -22,6 +24,10 @@ export const arrayShuffle = (array) => {
     array[k] = temp;
   }
   return array;
+};
+
+export const formatDate = (date) => {
+  return moment(date).format(`D MMMM YYYY`);
 };
 
 export const getTimeFromMins = (mins) => {
