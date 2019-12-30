@@ -33,6 +33,10 @@ const createFilmDetailsTemplate = (film) => {
     ageRestriction,
     commentsCont} = film;
 
+  const releaseDateYear = releaseDate.getFullYear();
+  const releaseDateMonth = releaseDate.toLocaleString(`en-US`, {month: `long`});
+  const releaseDateDay = releaseDate.getDate();
+
   const watchlistInput = createFilmControlsMarkup(`watchlist`, film.toWatch);
   const historyInput = createFilmControlsMarkup(`watched`, film.isWatched);
   const favoritesInput = createFilmControlsMarkup(`favorite`, film.isFavorite);
@@ -78,7 +82,7 @@ const createFilmDetailsTemplate = (film) => {
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Release Date</td>
-                  <td class="film-details__cell">${releaseDate}</td>
+                  <td class="film-details__cell">${releaseDateDay} ${releaseDateMonth} ${releaseDateYear}</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Runtime</td>
