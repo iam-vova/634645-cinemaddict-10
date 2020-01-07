@@ -63,6 +63,7 @@ const generateFilmCard = () => {
   const COMMENTS_COUNT = 4;
 
   return {
+    id: String(new Date() + Math.random()),
     poster: getRandomArrayItem(PosterNames),
     title,
     titleOriginal: title,
