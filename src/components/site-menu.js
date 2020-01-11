@@ -1,26 +1,41 @@
 import AbstractComponent from './abstract-component.js';
-import {filterCount} from '../mock/filter.js';
+import {FilterType} from '../const.js';
 
-const createSiteMenuTemplate = (films) => {
+const createFilterMarkup = (filter, isChecked) => {
+  const {name, count} = filter;
+  const filterLink = Object.keys(FilterType).find(key => FilterType[key] === name).toLowerCase();
+
+  return (
+    `<a href="#${filterLink}" id="${filterLink}" class="main-navigation__item ${isChecked ? `main-navigation__item--active` : ``}">${name} <span class="main-navigation__item-count">${count}</span></a>`
+  );
+};
+
+const createSiteMenuTemplate = (filters) => {
+  const filtersMarkup = filters.map((it) => createFilterMarkup(it, it.checked)).join(`\n`);
+
   return (
     `<nav class="main-navigation">
-      <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
-      <a href="#watchlist" class="main-navigation__item">Watchlist <span class="main-navigation__item-count">${filterCount(films, `watchlist`)}</span></a>
-      <a href="#history" class="main-navigation__item">History <span class="main-navigation__item-count">${filterCount(films, `history`)}</span></a>
-      <a href="#favorites" class="main-navigation__item">Favorites <span class="main-navigation__item-count">${filterCount(films, `favorites`)}</span></a>
+      ${filtersMarkup}
       <a href="#stats" class="main-navigation__item main-navigation__item--additional">Stats</a>
     </nav>`
   );
 };
 
 export default class SiteMenu extends AbstractComponent {
-  constructor(film) {
+  constructor(filters) {
     super();
 
-    this._film = film;
+    this._filters = filters;
   }
 
   getTemplate() {
-    return createSiteMenuTemplate(this._film);
+    return createSiteMenuTemplate(this._filters);
+  }
+
+  setFilterChangeHandler(handler) {
+    this.getElement().addEventListener(`click`, (evt) => {
+      const filterName = evt.target.id;
+      handler(filterName);
+    });
   }
 }
