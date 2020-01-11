@@ -2,6 +2,7 @@ import AbstractSmartComponent from './abstract-smart-component.js';
 import Comment from '../components/comments.js';
 import FilmDetailsMiddle from '../components/film-user-rate.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
+import {formatDate} from '../utils/common.js';
 
 const checkboxNameToLabel = {
   watchlist: `Add to watchlist`,
@@ -78,7 +79,7 @@ const createFilmDetailsTemplate = (film) => {
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Release Date</td>
-                  <td class="film-details__cell">${releaseDate}</td>
+                  <td class="film-details__cell">${formatDate(releaseDate)}</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Runtime</td>

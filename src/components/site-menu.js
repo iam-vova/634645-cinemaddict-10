@@ -3,7 +3,7 @@ import {FilterType} from '../const.js';
 
 const createFilterMarkup = (filter, isChecked) => {
   const {name, count} = filter;
-  const filterLink = Object.keys(FilterType).find(key => FilterType[key] === name).toLowerCase();
+  const filterLink = Object.keys(FilterType).find((key) => FilterType[key] === name).toLowerCase();
 
   return (
     `<a href="#${filterLink}" id="${filterLink}" class="main-navigation__item ${isChecked ? `main-navigation__item--active` : ``}">${name} <span class="main-navigation__item-count">${count}</span></a>`
@@ -35,7 +35,9 @@ export default class SiteMenu extends AbstractComponent {
   setFilterChangeHandler(handler) {
     this.getElement().addEventListener(`click`, (evt) => {
       const filterName = evt.target.id;
-      handler(filterName);
+      if (filterName) {
+        handler(filterName);
+      }
     });
   }
 }
