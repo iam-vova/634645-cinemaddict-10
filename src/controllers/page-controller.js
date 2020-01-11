@@ -33,8 +33,10 @@ export default class PageController {
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
     this._onLoadMoreButtonClick = this._onLoadMoreButtonClick.bind(this);
+    this._onFilterChange = this._onFilterChange.bind(this);
 
     this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChange);
+    this._filmsModel.setFilterChangeHandler(this._onFilterChange);
   }
 
   render() {
@@ -70,9 +72,15 @@ export default class PageController {
     }
   }
 
-  _renderFilms(films) {
-    const newFilms = renderFilms(films, this._filmListWrapElement, this._onDataChange, this._onViewChange);
+  _removeFilms() {
+    this._showedFilmControllers.forEach((filmsController) => filmsController.destroy());
+    this._showedFilmControllers = [];
+  }
 
+  _renderFilms(films) {
+    const filmListWrapElement = this._container.getElement().querySelector(`.films-list__container`);
+
+    const newFilms = renderFilms(films, filmListWrapElement, this._onDataChange, this._onViewChange);
     this._showedFilmControllers = this._showedFilmControllers.concat(newFilms);
     this._showingFilmsCount = this._showedFilmControllers.length;
   }
@@ -89,16 +97,18 @@ export default class PageController {
     this._loadMoreButtonComponent.setClickHandler(this._onLoadMoreButtonClick);
   }
 
+  _updateFilms(count) {
+    this._removeFilms();
+    this._renderFilms(this._filmsModel.getFilms().slice(0, count));
+    this._renderLoadMoreButton();
+  }
+
   _onDataChange(movieController, oldData, newData) {
-    const index = this._films.findIndex((it) => it === oldData);
+    const isSuccess = this._filmsModel.updateFilm(oldData.id, newData);
 
-    if (index === -1) {
-      return;
+    if (isSuccess) {
+      movieController.render(newData);
     }
-
-    this._films = [].concat(this._films.slice(0, index), newData, this._films.slice(index + 1));
-
-    movieController.render(this._films[index]);
   }
 
   _onViewChange() {
@@ -127,5 +137,9 @@ export default class PageController {
     if (this._showingFilmsCount >= films.length) {
       remove(this._loadMoreButtonComponent);
     }
+  }
+
+  _onFilterChange() {
+    this._updateFilms(FILMS_CARDS_COUNT_ON_START);
   }
 }
