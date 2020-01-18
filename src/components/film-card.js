@@ -1,7 +1,7 @@
 import AbstractComponent from './abstract-component.js';
 
 const createFilmCardTemplate = (film) => {
-  const {poster, title, rate, year, duration, genre, description, commentsCont} = film;
+  const {poster, title, rate, year, duration, genre, description, comments} = film;
 
   return (
     `<article class="film-card">
@@ -14,7 +14,7 @@ const createFilmCardTemplate = (film) => {
           </p>
           <img src="./images/posters/${poster}" alt="" class="film-card__poster">
           <p class="film-card__description">${description}</p>
-          <a class="film-card__comments">${commentsCont} comments</a>
+          <a class="film-card__comments">${comments.length} comments</a>
           <form class="film-card__controls">
             <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${film.toWatch ? `film-card__controls-item--active` : ``}">
                 Add to watchlist
