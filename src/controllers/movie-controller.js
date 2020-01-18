@@ -1,6 +1,7 @@
 import FilmCard from '../components/film-card.js';
 import FilmDetails from '../components/film-details.js';
 import {render, remove, replace, RenderPosition} from '../utils/render.js';
+import CommentsController from "./comments-controller";
 
 const Mode = {
   DEFAULT: `default`,
@@ -15,6 +16,7 @@ export default class MovieController {
 
     this._filmComponent = null;
     this._filmDetailsComponent = null;
+    this._filmComments = null;
 
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
@@ -52,6 +54,8 @@ export default class MovieController {
       render(siteMainElement, this._filmDetailsComponent, RenderPosition.BEFOREEND);
       document.addEventListener(`keydown`, this._onEscKeyDown);
       this._filmDetailsComponent.subscribeOnEvents();
+
+      this.renderComments(film);
     });
 
     if (oldFilmComponent && oldFilmDetailsComponent) {
@@ -60,6 +64,23 @@ export default class MovieController {
     } else {
       render(this._container, this._filmComponent, RenderPosition.BEFOREEND);
     }
+  }
+
+  renderComments(film) {
+    const container = this._filmDetailsComponent.getElement().querySelector(`.form-details__bottom-container`);
+    this._filmComments = new CommentsController(container, (commentsController, oldComment, newComment) => {
+      const newFilm = Object.assign({}, film);
+      if (oldComment === null) {
+        newFilm.comments.unshift(newComment);
+      } else if (newComment === null) {
+        newFilm.comments = newFilm.comments.filter((comment) => comment.id !== oldComment.id);
+      }
+
+      // TODO: how to do rerendering
+      // this._filmDetailsComponent.rerender();
+    });
+
+    this._filmComments.render(film.comments);
   }
 
   setDefaultView() {
