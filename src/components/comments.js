@@ -1,10 +1,10 @@
 import AbstractComponent from './abstract-component.js';
 
 const createCommentTemplate = (comment) => {
-  const {emoji, message, userName, date} = comment;
+  const {id, emoji, message, userName, date} = comment;
 
   return (
-    `<li class="film-details__comment">
+    `<li class="film-details__comment" id="${id}">
         <span class="film-details__comment-emoji">
             <img src="./images/emoji/${emoji}" width="55" height="55" alt="emoji">
         </span>
@@ -29,6 +29,11 @@ export default class Comment extends AbstractComponent {
 
   getTemplate() {
     return createCommentTemplate(this._comment);
+  }
+
+  setDelCommentBtnClickHandler(handler) {
+    this.getElement().querySelector(`.film-details__comment-delete`)
+      .addEventListener(`click`, handler);
   }
 }
 

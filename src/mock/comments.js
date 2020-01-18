@@ -24,6 +24,7 @@ const generateComment = () => {
   });
 
   return {
+    id: String(new Date() + Math.random()),
     userName: getRandomArrayItem(userNames),
     date: dateFormat.format(randomDate),
     message: arrayShuffle(commentTextTotal.split(` `)).slice(0, getRandomIntegerNumber(5, 10)).join(` `),
