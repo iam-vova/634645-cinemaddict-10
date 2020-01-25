@@ -1,5 +1,5 @@
 import Comments from "../components/comments";
-import {remove, render, RenderPosition, replace} from "../utils/render";
+import {remove, render, RenderPosition} from "../utils/render";
 import {generateDate} from "../utils/common";
 
 export default class CommentsController {
@@ -8,6 +8,7 @@ export default class CommentsController {
     this._film = film;
     this._onDataChange = this._onDataChange.bind(this);
     this._commentsComponent = null;
+    this._emoji = null;
   }
 
   destroy() {
@@ -18,16 +19,17 @@ export default class CommentsController {
     this._commentsComponent = new Comments(comments);
 
     this._commentsComponent.setSubmitFormHandler((evt) => {
-      if (evt.keyCode === 13 && (evt.metaKey || evt.ctrlKey)) {
-        const newData = {
-          id: `${Date.now()}-${Math.random()}`,
-          userName: `Admin`,
-          date: generateDate(new Date()),
-          message: evt.target.value,
-          // TODO: emoji
-          emoji: `no`
-        };
-        this._onDataChange(this, null, newData);
+      if (this._emoji !== null && evt.target.value !== ``) {
+        if (evt.keyCode === 13 && (evt.metaKey || evt.ctrlKey)) {
+          const newData = {
+            id: `${Date.now()}-${Math.random()}`,
+            userName: `Admin`,
+            date: generateDate(new Date()),
+            message: evt.target.value,
+            emoji: this._emoji.src.substring(this._emoji.src.lastIndexOf(`/`) + 1),
+          };
+          this._onDataChange(this, null, newData);
+        }
       }
     });
 
@@ -38,10 +40,10 @@ export default class CommentsController {
     this._commentsComponent.setEmojiHandler((evt) => {
       const emojiContainer = this._container.querySelector(`.film-details__add-emoji-label`);
       emojiContainer.innerHTML = ``;
-      const bigEmoji = evt.target.cloneNode(false);
-      bigEmoji.width = 55;
-      bigEmoji.height = 55;
-      emojiContainer.appendChild(bigEmoji);
+      this._emoji = evt.target.cloneNode(false);
+      this._emoji.width = 55;
+      this._emoji.height = 55;
+      emojiContainer.appendChild(this._emoji);
     });
 
     render(this._container, this._commentsComponent, RenderPosition.BEFOREEND);
@@ -49,6 +51,7 @@ export default class CommentsController {
 
   _onDataChange(movieController, oldData, newData) {
     this.destroy();
+    this._emoji = null;
     if (oldData === null) {
       this._film.comments.unshift(newData);
     } else if (newData === null) {

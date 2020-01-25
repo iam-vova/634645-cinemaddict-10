@@ -1,5 +1,4 @@
 import AbstractSmartComponent from './abstract-smart-component.js';
-import Comments from '../components/comments.js';
 import FilmDetailsMiddle from '../components/film-user-rate.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
 import {formatDate} from '../utils/common.js';
@@ -167,18 +166,6 @@ export default class FilmDetails extends AbstractSmartComponent {
       .addEventListener(`click`, () => {
         remove(this);
       });
-
-    // element.querySelectorAll(`.film-details__emoji-label img`).forEach((emoji) =>
-    //   emoji.addEventListener(`click`, () => {
-    //     // TODO: move to comments-controller.js
-    //     const emojiContainer = element.querySelector(`.film-details__add-emoji-label`);
-    //     emojiContainer.innerHTML = ``;
-    //     const bigEmoji = emoji.cloneNode(false);
-    //     bigEmoji.width = 55;
-    //     bigEmoji.height = 55;
-    //     emojiContainer.appendChild(bigEmoji);
-    //   })
-    // );
   }
 
   _showUserRateMiddle() {

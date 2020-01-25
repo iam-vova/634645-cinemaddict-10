@@ -68,19 +68,7 @@ export default class MovieController {
 
   renderComments(film) {
     const container = this._filmDetailsComponent.getElement().querySelector(`.form-details__bottom-container`);
-    // const newFilm = Object.assign({}, film);
     this._filmComments = new CommentsController(container, film);
-    // (commentsController, oldComment, newComment) => {
-    //   if (oldComment === null) {
-    //     newFilm.comments.unshift(newComment);
-    //   } else if (newComment === null) {
-    //     newFilm.comments = newFilm.comments.filter((comment) => comment.id !== oldComment.id);
-    //   }
-    //
-    //   // TODO: how to do rerendering
-    //   // this._filmDetailsComponent.rerender();
-    // });
-
     this._filmComments.render(film.comments);
   }
 

@@ -58,7 +58,7 @@ const createCommentTemplate = (comments) => {
        ${commentsTitle}
        <ul class="film-details__comments-list">${commentsMarkup}</ul>
        ${commentFormMorkup}
-    </section>`
+    </section>`;
 };
 
 export default class Comments extends AbstractSmartComponent {

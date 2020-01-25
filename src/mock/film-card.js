@@ -4,7 +4,6 @@ import {
   getRandomArrayItem,
   arrayShuffle,
   getTimeFromMins,
-  formatDate,
   generateRandomDate} from '../utils/common.js';
 import {generateComments} from "./comments.js";
 
