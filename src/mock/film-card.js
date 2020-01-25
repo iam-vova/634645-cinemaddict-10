@@ -4,7 +4,6 @@ import {
   getRandomArrayItem,
   arrayShuffle,
   getTimeFromMins,
-  formatDate,
   generateRandomDate} from '../utils/common.js';
 import {generateComments} from "./comments.js";
 
@@ -63,6 +62,7 @@ const generateFilmCard = () => {
   const COMMENTS_COUNT = 4;
 
   return {
+    id: String(new Date() + Math.random()),
     poster: getRandomArrayItem(PosterNames),
     title,
     titleOriginal: title,
@@ -70,7 +70,7 @@ const generateFilmCard = () => {
     producer: getRandomArrayItem(producers),
     screenwriter: getRandomArrayItem(screenwriters),
     actors: arrayShuffle(actors).slice(0, getRandomIntegerNumber(2, 5)).join(`, `),
-    releaseDate: formatDate(releaseDate),
+    releaseDate,
     year: releaseDate.getFullYear(),
     duration,
     genre: arrayShuffle(filmGenres).slice(0, 3),

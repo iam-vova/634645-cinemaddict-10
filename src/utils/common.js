@@ -36,6 +36,18 @@ export const getTimeFromMins = (mins) => {
   return hours === 0 ? minutes + `m` : hours + `h ` + minutes + `m`;
 };
 
+export const generateDate = (date) => {
+  const dateFormat = new Intl.DateTimeFormat(`en-US`, {
+    year: `numeric`,
+    month: `2-digit`,
+    day: `2-digit`,
+    hour: `numeric`,
+    minute: `numeric`
+  });
+
+  return dateFormat.format(date);
+};
+
 export const generateRandomDate = () => {
   const minDate = new Date(1895, 3, 22).getTime();
   const maxDate = new Date().getTime();
